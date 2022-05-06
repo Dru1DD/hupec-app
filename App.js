@@ -1,20 +1,29 @@
+import 'react-native-gesture-handler'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
+import useCachedResources from './hooks/useCachedResources';
+import useColorScheme from './hooks/useColorScheme';
+import Navigation from './navigation';
 
-export default function App() {
+import { store } from './redux/store';
+
+export default function App () {
+
+  const isLoadingComplete = useCachedResources()
+  const colorScheme = useColorScheme()
+
+  if(!isLoadingComplete) {
+    return null
+  } 
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <StatusBar />
+        <Navigation colorScheme={colorScheme}/>
+      </SafeAreaProvider>
+    </Provider>
+    
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
