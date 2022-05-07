@@ -15,7 +15,7 @@ export const useCatchUpdates = () => {
     useEffect(() => {
         const fetchUpdates = async () => {
 
-            const response = await axios.get('http://localhost:6000/getUserUpdate', {
+            const response = await axios.get('https://hupec-app.herokuapp.com/getUserUpdate', {
                 username
             })
 
@@ -25,7 +25,7 @@ export const useCatchUpdates = () => {
             })
 
 
-            const friendsResult = await axios.get('http://localhost:6000/getFriendsUpdate', {
+            const friendsResult = await axios.get('https://hupec-app.herokuapp.com/getFriendsUpdate', {
                 username
             })
 
@@ -43,7 +43,7 @@ export const useCatchUpdates = () => {
     }, [])
 
     const fetchUpdates = async () => {
-        const response = await axios.get('http://localhost:6000/getUserUpdate', {
+        const response = await axios.get('https://hupec-app.herokuapp.com/getUserUpdate', {
             username
         })
 
@@ -56,7 +56,7 @@ export const useCatchUpdates = () => {
     }
 
     const fetchFriendsUpdates = async () => {
-        const response = await axios.get('http://localhost:6000/getFriendsUpdate', {
+        const response = await axios.get('https://hupec-app.herokuapp.com/getFriendsUpdate', {
             username
         })
 
