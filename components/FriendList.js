@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { View, Text, Pressable, ScrollView, TouchableOpacity } from 'react-native'
+import { useSelector } from 'react-redux'
+
 import { styles } from '../styles/friendListStyle'
 
-
-import { useCatchSubcsriptions } from '../hooks/useCatchSubcsriptions'
 
 const FriendList= ({ routeFunc }) => {
 
@@ -12,7 +12,7 @@ const FriendList= ({ routeFunc }) => {
         second: false
     })
 
-    const { subscriptionsData, subscribersData, loading } = useCatchSubcsriptions()
+    const user = useSelector(state => state.user)
 
     return (
         <View style={styles.main}>
@@ -38,12 +38,8 @@ const FriendList= ({ routeFunc }) => {
             </View>
             <ScrollView style={styles.footer}>
                     {
-                        headerActive.first ? 
-                            loading ? (
-                                <View style={styles.friendEmpty}>
-                                    <Text>Loading</Text>
-                                </View>
-                            ): subscriptionsData && subscriptionsData.lenth !== 0 ? subscriptionsData.map((item, key) => {
+                        headerActive.first ?
+                            user.subscriptions && user.subscriptions.length !== 0 ? user.subscriptions.map((item, key) => {
                                 return (
                                    <View style={styles.friendItem} key={key}>
                                         <View style={styles.friendAvatar}/>
@@ -56,7 +52,7 @@ const FriendList= ({ routeFunc }) => {
                                     <Text>You don't have subscriptions</Text>
                                 </View>
                             )
-                            : subscribersData && subscribersData.length !== 0 ? subscribersData.map((item, key) => {
+                            : user.subscriber && user.subscriber.length !== 0 ? user.subscriber.map((item, key) => {
                                 return (
                                     <View style={styles.friendItem} key={key}>
                                         <View style={styles.friendAvatar} />
@@ -66,7 +62,7 @@ const FriendList= ({ routeFunc }) => {
                             }) : (
                                 <TouchableOpacity
                                     style={styles.friendEmpty}
-                                    onPress={() => routeFunc}
+                                    onPress={() => routeFunc()}
                                 >
                                     <Text>Add friend</Text>
                                 </TouchableOpacity>

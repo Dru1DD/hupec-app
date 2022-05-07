@@ -35,7 +35,7 @@ const Updates = () => {
 
         try {
             if(update.length !== 0) {
-                await axios.post('http://localhost:6000/addUpdates', {
+                await axios.post('https://hupec-app.herokuapp.com/addUpdates', {
                             username,
                             data: date,
                             textBody: update

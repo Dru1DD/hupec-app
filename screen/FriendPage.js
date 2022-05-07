@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, TextInput, Text, FlatList, Pressable } from "react-native";
+import { View, TextInput, Text, FlatList, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 
 import Modal from "../components/Modal";
@@ -8,9 +8,9 @@ import { AntDesign } from "@expo/vector-icons";
 import { styles } from "../styles/friendPageStyle";
 
 import axios from "axios";
-import { useCatchSubcsriptions } from "../hooks/useCatchSubcsriptions";
 
 const FriendPage = () => {
+
   const [searchTerm, setSearchTerm] = useState("");
   const [usersList, setUsersList] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
@@ -19,18 +19,14 @@ const FriendPage = () => {
 
   const { username, subscriptions } = useSelector((state) => state.user);
 
-  const { fetchUsers } = useCatchSubcsriptions();
-
   useEffect(() => {
-
-
-    const getUsers = async () => {
+    const getUsers = async (user) => {
 
       try {
-        const result = await axios.get("http://localhost:6000/getAllUsers");
+        const result = await axios.get("https://hupec-app.herokuapp.com/getAllUsers");
 
         const usersList = result.data.filter(
-          (item) => item.username !== username
+          (item) => item.username !== user
         );
 
         setUsersList(() =>
@@ -56,8 +52,8 @@ const FriendPage = () => {
       setLoading(!loading);
     };
 
-    getUsers();
-  }, []);
+    getUsers(username);
+  }, [username]);
 
   const searchFilter = (text) => {
     if (text) {
@@ -77,13 +73,14 @@ const FriendPage = () => {
 
   const addSubscriptions = async (subscriberID, subscriberName) => {
     try {
-      await axios.post("http://localhost:6000/addSubscriber", {
+      let isAdd = checkIsFriend(subscriberName)
+
+      isAdd ? await axios.post("https://hupec-app.herokuapp.com/addSubscriber", {
         username,
         subscriberID,
         subscriberName,
-      });
+      }): null
 
-      fetchUsers();
     } catch (e) {
       setError(!error);
     }
@@ -91,14 +88,8 @@ const FriendPage = () => {
 
   const checkIsFriend = (name) => {
     let isFriend = false
-    
-    console.log(subscriptions)
 
     subscriptions ?  subscriptions.forEach((subscriber) => {
-      console.log(`
-          UserListName: ${subscriber.subscriptionsName}
-          Username: ${item.name}
-       `)
 
        if(subscriber.subscriptionsName === name) {
          isFriend = !isFriend
@@ -129,11 +120,11 @@ const FriendPage = () => {
                 <View style={styles.listItem}>
                   <Text>{item.name}</Text>
                   {checkIsFriend(item.name) ? null : (
-                    <Pressable
+                    <TouchableOpacity
                       onPress={() => addSubscriptions(item.id, item.name)}
                     >
                       <AntDesign name="adduser" size={24} color="black" />
-                    </Pressable>
+                    </TouchableOpacity>
                   )}
                 </View>
               )}

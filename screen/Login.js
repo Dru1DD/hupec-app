@@ -14,7 +14,6 @@ import { ADD_USER_INFO } from '../redux/action/actionType'
 const Login = ({ navigation }) => {
 
     const [ email, setEmail ] = useState('')
-    const [ userID, setUserID ] = useState('')
     const [ username, setUsername ] = useState('')
     const [ isError, setIsError ] = useState(false)
 
@@ -23,55 +22,50 @@ const Login = ({ navigation }) => {
     const loginHandler = async () => {
         try {
             const response = await axios
-                .post('http://localhost:6000/login', {
+                .post('https://hupec-app.herokuapp.com/login', {
                     username,
                     email
                 })
-                setUserID(response.data.id)
+
+            let user =  {
+                id: response.data._id,
+                email: response.data.email,
+                username: response.data.username,
+                subscriber: response.data.subscribers,
+                subscriptions: response.data.subscriptions,
+                updates: response.data.updates,
+                friendsUpdates: []
+            }
+
+            await dispatch({
+                type: ADD_USER_INFO,
+                payload: user
+            }) 
+
+            navigation.navigate('Root')
             
         } catch (e) {
+
             console.log(e)
             return setIsError(!isError)
         }
-
-
-        if(!isError) {
-            await dispatch({
-                type: ADD_USER_INFO,
-                payload: {
-                    id: userID,
-                    email: email,
-                    username: username,
-                    subscriber: [],
-                    subscriptions: [],
-                    updates: [],
-                    friendsUpdates: []
-                }
-            })
-
-            navigation.navigate('Root')
-        }
+  
     }
  
     const registrationHandler = async () => {
 
         try {
-            const response = await axios.post('http://localhost:6000/registration', {
+            const response = await axios.post('https://hupec-app.herokuapp.com/registration', {
                 email, 
                 username
             })
-            setUserID(response.data._id)
-        } catch (e) {
-            return setIsError(!isError)
-        }
 
-        if(!isError) {
             await dispatch({
                 type: ADD_USER_INFO,
                 payload: {
-                    id: userID,
-                    email: email,
-                    username: username,
+                    id: response.data._id,
+                    email: response.data.email,
+                    username: response.data.username,
                     subscriber: [],
                     subscriptions: [],
                     updates: [],
@@ -80,6 +74,8 @@ const Login = ({ navigation }) => {
             })
 
             navigation.navigate('Root')
+        } catch (e) {
+            return setIsError(!isError)
         }
     }
 

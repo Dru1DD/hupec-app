@@ -24,7 +24,7 @@ export const rootReducer = ( state = initialState, action ) => {
                 ...state,
                 user: {
                     ...state.user,
-                    subscriber: action.payload
+                    subscriber: [...state.user.subscriber, action.payload]
                 }
             }
         case ADD_ALL_SUBSCRTIPTION:
@@ -32,7 +32,7 @@ export const rootReducer = ( state = initialState, action ) => {
                 ...state,
                 user: {
                     ...state.user,
-                    subscription: action.payload
+                    subscriptions: [...state.user.subscriptions, action.payload]
                 }
             }
         case ADD_SUBSCRIBER:
@@ -48,7 +48,7 @@ export const rootReducer = ( state = initialState, action ) => {
                 ...state,
                 user: {
                     ...state.user,
-                    subscription: [...state.user.subscriptions, action.payload]
+                    subscriptions: [...state.user.subscriptions, action.payload]
                 }
             }
         case ADD_UPDATES:

@@ -12,14 +12,15 @@ export const useCatchSubcsriptions = () => {
 
     const { username } = useSelector((state) => state.user)
 
+    console.log(username)
+     
     const dispatch = useDispatch()
 
     useEffect(() => {
         const fetchUsers = async (name) => {
-            await console.log(name)
 
-            const response = await axios.get('http://localhost:6000/getAllSubscriber', {
-                username: username
+            const response = await axios.get('https://hupec-app.herokuapp.com/getAllSubscriber', {
+                username: name
             }).finally(() => setLoading(!loading))
 
             await dispatch({
@@ -37,16 +38,30 @@ export const useCatchSubcsriptions = () => {
         }
 
         fetchUsers(username)
-    }, [])
+    }, [username])
 
     const fetchUsers = async () => {
-        const response = await axios.get('http://localhost:6000/getAllSubscriber', {
+
+        const response = await axios.get('https://hupec-app.herokuapp.com/getAllSubscriber', {
             username
+        }).finally(() => setLoading(!loading))
+
+        await dispatch({
+            type: ADD_ALL_SUBSCRIBER,
+            payload: response.data.subscribers
+        })
+
+        await dispatch({
+            type: ADD_ALL_SUBSCRTIPTION,
+            payload: response.data.subscribers
         })
         
-        setSubscriptionsData(response.data)
+        console.log(response.data)
+
+        setSubscriptionsData(response.data.subscriptions)
+        setSubscribersData(response.data.subscribers)
     }
-    
+
     return {
         subscriptionsData,
         subscribersData,
