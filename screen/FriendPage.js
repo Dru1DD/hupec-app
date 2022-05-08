@@ -28,7 +28,7 @@ const FriendPage = () => {
       setLoading(true)
 
       const result = await axios.get("https://hupec-app.herokuapp.com/getAllUsers");
-      const subscriberQuery = await axios.get("http://localhost:6000/getAllSubscriber", {
+      const subscriberQuery = await axios.get("https://hupec-app.herokuapp.com/getAllSubscriber", {
         params: {
           username
         }

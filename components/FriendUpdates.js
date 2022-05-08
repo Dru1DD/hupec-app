@@ -14,11 +14,6 @@ const FriendUpdate = () => {
     useEffect(() => {
         const fetchFriendsUpdate = async () => {
             try {
-                // const response = await axios.get('http://localhost:6000/getFriendsUpdate', {
-                //     params: {
-                //         username
-                //     }
-                // })
 
                 const response = await axios.get("https://hupec-app.herokuapp.com/getFriendsUpdate", {
                     params: {
