@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, TextInput, Text, FlatList, TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Modal from "../components/Modal";
 import { AntDesign } from "@expo/vector-icons";
@@ -8,6 +8,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { styles } from "../styles/friendPageStyle";
 
 import axios from "axios";
+import { ADD_ALL_SUBSCRIBER, ADD_ALL_SUBSCRTIPTION } from "../redux/action/actionType";
 
 const FriendPage = () => {
 
@@ -18,42 +19,60 @@ const FriendPage = () => {
   const [error, setError] = useState(false);
 
   const { username, subscriptions } = useSelector((state) => state.user);
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    const getUsers = async (user) => {
+  const getUsers = async (user) => {
 
-      try {
-        const result = await axios.get("https://hupec-app.herokuapp.com/getAllUsers");
+    try {
 
-        const usersList = result.data.filter(
-          (item) => item.username !== user
-        );
+      setLoading(true)
 
-        setUsersList(() =>
-          usersList.map((item) => {
-            return {
-              name: item.username,
-              id: item._id,
-            };
-          })
-        );
-        setMasterDataSource(() =>
-          usersList.map((item) => {
-            return {
-              name: item.username,
-              id: item._id,
-            };
-          })
-        );
-      } catch (e) {
-        console.log(e.message);
-      }
+      const result = await axios.get("https://hupec-app.herokuapp.com/getAllUsers");
+      const subscriberQuery = await axios.get("http://localhost:6000/getAllSubscriber", {
+        params: {
+          username
+        }
+      })
 
-      setLoading(!loading);
-    };
+      await dispatch({
+        type: ADD_ALL_SUBSCRIBER,
+        payload: subscriberQuery.data.subscribers
+      })
 
-    getUsers(username);
-  }, [username]);
+      await dispatch({
+        type: ADD_ALL_SUBSCRTIPTION,
+        payload: subscriberQuery.data.subscriptions
+      })
+
+      const usersList = result.data.filter(
+        (item) => item.username !== user
+      );
+      
+
+      setUsersList(() =>
+        usersList.map((item) => {
+          return {
+            name: item.username,
+            id: item._id,
+          };
+        })
+      );
+      setMasterDataSource(() =>
+        usersList.map((item) => {
+          return {
+            name: item.username,
+            id: item._id,
+          };
+        })
+      );
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    setLoading(!loading);
+  };
+
+  useEffect(() => { getUsers(username); }, []);
 
   const searchFilter = (text) => {
     if (text) {
@@ -80,6 +99,8 @@ const FriendPage = () => {
         subscriberID,
         subscriberName,
       }): null
+
+      getUsers(username)
 
     } catch (e) {
       setError(!error);

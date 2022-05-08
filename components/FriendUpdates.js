@@ -43,37 +43,37 @@ const FriendUpdate = () => {
     }, [])
     return(
         <ScrollView>
+            
         { loading ? (
             <View>
                 <Text>Loading...</Text>
             </View>
         ) : friendsUpdates.length !== 0 ? friendsUpdates.map((friendUpdate, index)=> {
-            const { friendName, friendUpdates } = friendUpdate.friendsUpdate[index]
-            
-            return friendUpdates.map(update => {
+        
+            if(friendUpdate.friendsUpdate.length === 0) {
                 return (
-                    <View style={styles.container} key={update._id}>
-                        <View>
-                            <View><Text style={{ fontSize: 14 }}>{friendName}</Text></View>
-                            <Text style={{ paddingTop: 10, paddingBottom: 10 }}>{update.data}</Text>
-                        </View>
-                        <View>
-                            <Text>{update.textBody}</Text>
-                        </View>
+                    <View>
+                        <Text>Subscribe to someone to see their updates</Text>
                     </View>
                 )
-                // return update.map(item => (
-                //     <View style={styles.container} key={item._id}>
-                //         <View>
-                //             <View><Text style={{fontSize: 14}}>{update.friendName}</Text></View>
-                //             <Text style={{ paddingTop: 10, paddingBottom: 10}}>{item.data}</Text>
-                //         </View>
-                //         <View>
-                //             <Text>{item.textBody}</Text>
-                //         </View>
-                //     </View> 
-                // ))
-            })
+            } else {
+                const { friendName, friendUpdates } = friendUpdate.friendsUpdate[index]
+                
+                return friendUpdates.map(update => {
+                    return (
+                        <View style={styles.container} key={update._id}>
+                            <View>
+                                <View><Text style={{ fontSize: 14 }}>{friendName}</Text></View>
+                                <Text style={{ paddingTop: 10, paddingBottom: 10 }}>{update.data}</Text>
+                            </View>
+                            <View>
+                                <Text>{update.textBody}</Text>
+                            </View>
+                        </View>
+                    )
+                })
+            }
+            
             
         }) : (
             <Text>Not a single update from friends</Text>
