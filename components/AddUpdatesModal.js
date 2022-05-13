@@ -1,7 +1,7 @@
 import React from 'react';
-import { Alert, Modal as _Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import { Modal as _Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-const Modal= ({ modalVisible, setModalVisible, errorText }) => {
+const Modal= ({ modalVisible, setModalVisible, addUpdates, update, setUpdate }) => {
 
   return (
     <View style={styles.centeredView}>
@@ -14,41 +14,34 @@ const Modal= ({ modalVisible, setModalVisible, errorText }) => {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>{errorText}</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Хорошо</Text>
-            </Pressable>
+                <View style={styles.modalText}>
+                  <Text style={{ fontSize: 18 }}>New update</Text>
+                </View>
+                <View style={styles.bottomSheetMain}>
+                  <TextInput
+                    multiline={true}
+                    numberOfLines={12}
+                    value={update}
+                    onChangeText={setUpdate}
+                    onEndEditing={addUpdates}
+                    placeholder={"Description"}
+                  />
+                </View>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => addUpdates()}
+                >
+                  <Text style={styles.colorWhite}>Send</Text>
+                </TouchableOpacity>
+              </View>
           </View>
-        </View>
       </_Modal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  bottomSheetContainer: {
-    padding: 16,
-},
-bottomSheetTitle: {
-    padding: 5,
-},
-bottomSheetMain: {
-    padding: 5
-},
-bottomSheetButton: {
-    height: 35,
-    width: '95%',
-    margin: 15,
-    position: 'absolute',
-    bottom: 0,
-    backgroundColor: 'grey',
-    justifyContent: 'center',
-    borderRadius: 10,
-    alignItems: 'center'
-},
-centeredView: {
+  centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -71,6 +64,9 @@ centeredView: {
   },
   button: {
     borderRadius: 20,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 10,
     elevation: 2,
   },
@@ -89,6 +85,13 @@ centeredView: {
     marginBottom: 15,
     textAlign: 'center',
   },
+  bottomSheetMain: {
+      width: 150,
+      height: 200
+  },
+  colorWhite: {
+      color: 'white'
+  }
 });
 
 export default Modal;

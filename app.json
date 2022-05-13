@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ohmy-app-js",
+    "name": "Hupec",
     "slug": "ohmy-app-js",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,13 +17,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dru1d.ohmyappjs"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.dru1d.ohmyappjs"
     },
     "web": {
       "favicon": "./assets/favicon.png"

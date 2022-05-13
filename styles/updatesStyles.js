@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
         flex: 1,
     },
     header: {
-        flex: 0.13,
+      height: 75,
         borderWidth: 1,
         borderColor: 'lightgrey',
         justifyContent: 'flex-start',
@@ -29,28 +29,6 @@ export const styles = StyleSheet.create({
         borderBottomColor: 'blue'
     },
     footer: {
-        flex:4,
-    },
-    bottomSheetContainer: {
-        backgroundColor: 'white',
-        padding: 16,
-        height: 300,
-    },
-    bottomSheetTitle: {
-        padding: 5,
-    },
-    bottomSheetMain: {
-        padding: 5
-    },
-    bottomSheetButton: {
-        height: 35,
-        width: '95%',
-        margin: 15,
-        position: 'absolute',
-        bottom: 0,
-        backgroundColor: 'grey',
-        justifyContent: 'center',
-        borderRadius: 10,
-        alignItems: 'center'
+        width: '100%'
     }
 })
