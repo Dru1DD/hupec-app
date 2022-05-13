@@ -63,9 +63,9 @@ const Login = ({ navigation }) => {
             await dispatch({
                 type: ADD_USER_INFO,
                 payload: {
-                    id: response.data._id,
-                    email: response.data.email,
-                    username: response.data.username,
+                    id: "",
+                    email: email,
+                    username: username,
                     subscriber: [],
                     subscriptions: [],
                     updates: [],
